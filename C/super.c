@@ -84,8 +84,6 @@ Simulation* init_simulation(int N, double L, double v0, double tstep, int tmax, 
 	simu->noise = noise;
 	simu->birds = malloc(N*sizeof(Bird*));
 	simu->cells = malloc(((int)L)*sizeof(Cell**));
-	//fprintf(simu->loc_file,"%d\n",simu->N);
-	//fprintf(simu->loc_file,"%d\n",simu->tmax);
 	
 	//create the cells
 	for (int i = 0; i < (int)simu->L; i++)
@@ -96,7 +94,6 @@ Simulation* init_simulation(int N, double L, double v0, double tstep, int tmax, 
 			simu->cells[i][j] = create_cell(i,j);
 		}
 	}
-	//printf("%d\n",get_cell_cx(simu->cells[2][3]));
 	
 	simu->birds[0] = create_bird(simu,L,v0,0);
 	simu->bfirst = simu->birds[0];
@@ -108,12 +105,9 @@ Simulation* init_simulation(int N, double L, double v0, double tstep, int tmax, 
 	{
 		simu->birds[i] = create_bird(simu,L,v0,i);
 		simu->birds[i-1]->snext = simu->birds[i];
-		//next->snext = create_bird(simu,L,v0,i);
 		assign_cc(simu->birds[i]);
-		//printf("%d\n",simu->birds[i]->cx);
 		assign_ncells(simu->birds[i],L);
 		add_bird(simu->birds[i]->ncells[0], simu->birds[i]);
-		//add_bird(simu->cells[simu->birds[i]->cx][simu->birds[i]->cy], simu->birds[i]);
 	}
 	
 	for (int i = 0; i < 200; i++)
@@ -152,7 +146,6 @@ void move_birds(Simulation* simu)
 //updates all the birds angles and moves them
 double update_birds(Simulation* simu)
 {
-	//assert(simu);
 	double vx = 0.0;
 	double vy = 0.0;
 	Bird* next = simu->bfirst;
@@ -170,7 +163,6 @@ double update_birds(Simulation* simu)
 //calculates the (absolute) average velocity for dem birds
 double calc_vave(Simulation* simu)
 {
-	//assert(simu);
 	double vx = 0;
 	double vy = 0;
 	Bird* next = simu->bfirst;
@@ -191,18 +183,13 @@ void calc_angles(Simulation* simu)
 	Bird* snext = simu->bfirst;
 	while (snext != NULL)
 	{
-		//printf("%d\n",snext->idx);
 		double vx = 0;
 		double vy = 0;
-		//printf("%d\n",simu->birds[i]->idx);
 		for (int j = 0; j < 9; j++)
 		{
-			//for (int k = 0; k < simu->birds[i]->ncells[j]->nbirds; k++)
-			//int counter = 0;
 			Bird* next = snext->ncells[j]->bfirst;
 			while (next != NULL)
 			{
-				//printf("%d ",next->idx);
 				if (distance(snext, next, simu->L) < simu->range)
 				{
 					vx += next->vx;
@@ -392,7 +379,6 @@ Cell* create_cell(int cx, int cy)
 	cell->nbirds = 0;
 	cell->bfirst = NULL;
 	cell->blast = NULL;
-	//cell->birds = malloc(N*sizeof(Bird*));
 	return cell;
 }
 
@@ -403,7 +389,6 @@ int get_cell_cx(Cell* cell)
 
 void add_bird(Cell* cell, Bird* bird)
 {
-	//assert(bird);
 	if (cell->nbirds == 0)
 	{
 		cell->bfirst = bird;
@@ -472,7 +457,6 @@ Bird* create_bird(Simulation* simu, double L, double v0, int idx)
 //Moves a bird and, if necessary, updates the list of neighboring cells.
 void move(Bird* bird, double L, double tstep)
 {
-	//assert(bird);
 	bird->x = get_coord(bird->x + bird->vx*tstep, L);
 	bird->y = get_coord(bird->y + bird->vy*tstep, L);
 	int ocx = bird->cx;
@@ -488,7 +472,6 @@ void move(Bird* bird, double L, double tstep)
 
 void update(Bird* bird)
 {
-	//assert(bird);
 	bird->a = bird->na;
 	if (bird->na > TWOPI)
 	{
@@ -516,7 +499,6 @@ void assign_cc(Bird* bird)
 
 void assign_ncells(Bird* bird, double L)
 {
-	//assert(bird);
 	int cx = bird->cx;
 	int cy = bird->cy;
 	int xright = get_cc(cx+1, L);
@@ -524,7 +506,6 @@ void assign_ncells(Bird* bird, double L)
 	int yup = get_cc(cy+1, L);
 	int ydown = get_cc(cy-1,L);
 	
-	//printf("%d %d %d %d %d %d\n",cx, cy, xright, xleft, yup, ydown);
 	bird->ncells[0] = bird->simu->cells[cx][cy];
 	bird->ncells[1] = bird->simu->cells[xleft][cy];
 	bird->ncells[2] = bird->simu->cells[xleft][yup];
