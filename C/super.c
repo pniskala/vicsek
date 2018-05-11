@@ -432,7 +432,6 @@ void remove_bird(Cell* cell, Bird* bird)
 
 Bird* create_bird(Simulation* simu, double L, double v0, int idx)
 {
-	//assert(simu);
 	Bird* newBird = malloc(sizeof(Bird));
 	newBird->simu = simu;
 	newBird->v0 = v0;
