@@ -6,10 +6,6 @@
 #include <time.h>
 #include <string.h>
 
-/*#include "simulation.h"
-#include "bird.h"
-#include "cell.h"
-*/
 #include "super.h"
 #include "randomlib.h"
 
