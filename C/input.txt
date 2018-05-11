@@ -1,0 +1,13 @@
+mode = 1
+N = 400
+L = 10
+v0 = 0.03
+tstep = 1.0
+tmax = 1000
+tmin = 1000
+range = 1.0
+eta = 1.0
+etamax = 1.81
+etastep = 0.06
+Nmax = 3200
+nsamples = 1
